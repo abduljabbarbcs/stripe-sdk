@@ -104,3 +104,11 @@ class StripeSdk:
             return plans
         except Exception as e:
             return e
+
+    @staticmethod
+    def retrieve_subscription(id):
+        try:
+            subscription = cfg.STRIPESDK.Subscription.retrieve(id)
+            return subscription
+        except Exception as e:
+            return e
