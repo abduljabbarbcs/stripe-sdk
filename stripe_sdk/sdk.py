@@ -114,16 +114,26 @@ class StripeSdk:
             return e\
 
     @staticmethod
-    def change_subscription(sub_id,plan_id):
+    def change_subscription(sub_id,plan_id,coupon_id=None):
         try:
             old_subscription = StripeSdk.retrieve_subscription(sub_id)
-            subscription = cfg.STRIPESDK.Subscription.modify(sub_id,
-              cancel_at_period_end=False,
-              items=[{
-                'id': old_subscription['items']['data'][0].id,
-                'plan': plan_id,
-              }]
-            )
+            if coupon_id:
+                subscription = cfg.STRIPESDK.Subscription.modify(sub_id,
+                  cancel_at_period_end=False,
+                  coupon=coupon_id,
+                  items=[{
+                    'id': old_subscription['items']['data'][0].id,
+                    'plan': plan_id,
+                  }]
+                )
+            else:
+                subscription = cfg.STRIPESDK.Subscription.modify(sub_id,
+                 cancel_at_period_end=False,
+                 items=[{
+                     'id': old_subscription['items']['data'][0].id,
+                     'plan': plan_id,
+                 }]
+                )
             return subscription
         except Exception as e:
             return e
