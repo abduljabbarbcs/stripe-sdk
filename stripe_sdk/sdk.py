@@ -111,4 +111,19 @@ class StripeSdk:
             subscription = cfg.STRIPESDK.Subscription.retrieve(id)
             return subscription
         except Exception as e:
+            return e\
+
+    @staticmethod
+    def change_subscription(sub_id,plan_id):
+        try:
+            old_subscription = StripeSdk.retrieve_subscription(sub_id)
+            subscription = cfg.STRIPESDK.Subscription.modify(sub_id,
+              cancel_at_period_end=False,
+              items=[{
+                'id': old_subscription['items']['data'][0].id,
+                'plan': plan_id,
+              }]
+            )
+            return subscription
+        except Exception as e:
             return e
